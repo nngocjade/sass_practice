@@ -1,34 +1,72 @@
-// SCSS variables
-$primary-color: black;
-$accent-color: orange;
-$text-color: #fff;
+@import "./resets";
+@import "./variables";
 
-// MAP - key value pair, 
-// can create map of colors and different things 
+// functions should be used to compute values
+// and return values
+@function weight($weight-name) {
+  @return map-get($font-weights, $weight-name);
+}
 
-$font-weights:(
- "regular": 400,
- "medium": 500,
- "bold": 700,
-);
+// mixin should return styles
+@mixin flexCenter($direction) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
 
-body{
- background: $accent-color;
- color: $text-color;
+// if true, will add these styles to the light class
+// if false, it will not add anything, the light class is empty. When the compiler runs and finds an empty class in scss, it will not add to the css file
+@mixin theme($light-theme: true) {
+  @if $light-theme {
+    background: lighten($primary-color, 100%);
+    color: darken($text-color, 100%);
+  }
+}
+
+// mixin media query
+@mixin mobile {
+  @media (max-width: $mobile) {
+    // adds whatever content where mobile is called
+    @content;
+  }
+}
+
+body {
+  background: $accent-color;
+  color: $text-color;
 }
 
 // nesting
 // nest when necessary
 //otherwise REUSE CLASSES
-.main{
- width: 80%;
- margin: 0 auto;
- // & = parent, in this case, .main
- // #{&} = everything before it plus the parent
- #{&}__paragraph{
-   font-weight: map-get($font-weights, bold);
-   &:hover{
-    color: pink;
-   }
- }
+.main {
+  @include flexCenter(row);
+  width: 80%;
+  margin: 0 auto;
+  // & = parent, in this case, .main
+  // #{&} = everything before it plus the parent
+  #{&}__paragraph1 {
+    font-weight: weights(bold);
+    &:hover {
+      color: pink;
+    }
+  }
+
+  #{&}__paragraph2 {
+    // @extend inherits all the properties from paragraph1
+    @extend .main__paragraph1;
+
+    &:hover {
+      color: $accent-color;
+    }
+  }
+
+  @include mobile {
+    flex-direction: column;
+  }
+}
+
+.light {
+  @include theme($light-theme: true);
 }

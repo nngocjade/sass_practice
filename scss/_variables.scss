@@ -1,0 +1,13 @@
+// SCSS variables
+$primary-color: black;
+$accent-color: orange;
+$text-color: #fff;
+
+// MAP - key value pair, 
+// can create map of colors and different things 
+$font-weights:(
+ "regular": 400,
+ "medium": 500,
+ "bold": 700,
+);
+$mobile: 800px;
